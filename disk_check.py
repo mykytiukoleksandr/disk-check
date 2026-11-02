@@ -22,7 +22,7 @@ usage_percent = used / total * 100
 print(f"Disk usage: {usage_percent:.1f}%")
 
 # 5. print WARNING if above 80, otherwise OK    
-                                
+
 if usage_percent > 80:
     print("WARNING: disk is almost full")
 else:
