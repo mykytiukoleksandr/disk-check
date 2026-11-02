@@ -21,3 +21,11 @@ Make sure you have Python 3 installed. Run the script in your terminal using the
 
 ```bash
 python3 disk_check.py
+```
+## Example output
+```
+Total disk size (GB): 500
+Used space (GB): 430
+Disk usage: 86.0%
+WARNING: disk is almost full
+```
