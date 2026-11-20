@@ -1,11 +1,28 @@
-def is_valid(total, used):
-    if total <= 0 or used < 0 or total < used:
-        return False
-    else:
-        return True
+import psutil
+from datetime import datetime
 
-def calc_percent(used, total):
-    return (used / total) * 100
+
+def log_result(percent, limit, status, log_file="disk_check.log"):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    line = f"[{timestamp}] usage={percent:.1f}% limit={limit:.1f}% status={status}\n"
+    with open(log_file, "a", encoding="utf-8") as file:
+        file.write(line)
+
+def ask_limit():
+    while True:
+        while True:
+            try:
+                percent = float(input("Percent: "))
+                break
+            except ValueError:
+                print("Type numbers.")
+
+        if 0 <= percent <= 100:
+            print("Percent correct")
+            return percent
+        else:
+            print("Type percent from 1 to 100")
+
 
 def get_status(percent, limit=80):
     if percent > limit:
@@ -13,14 +30,11 @@ def get_status(percent, limit=80):
     else:
         return "OK"
 
-total = float(input("Total disk size (GB): "))
-used = float(input("Used space (GB): "))
 
-if is_valid(total, used):
-    usage_percent = calc_percent(used, total)
-    status = get_status(usage_percent)
+limit = ask_limit()
+disk = psutil.disk_usage("/")
+status = get_status(disk.percent, limit)
+log_result(disk.percent, limit, status)
 
-    print(f"Disk usage {usage_percent:.1f}%")
-    print(status)
-else:
-    exit()
+print(f"Disk usage: {disk.percent:.1f}%")
+print(status)
