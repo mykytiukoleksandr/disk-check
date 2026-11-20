@@ -30,11 +30,17 @@ def get_status(percent, limit=80):
     else:
         return "OK"
 
-
+path = "/"
 limit = ask_limit()
-disk = psutil.disk_usage("/")
+disk = psutil.disk_usage(path)
 status = get_status(disk.percent, limit)
 log_result(disk.percent, limit, status)
 
-print(f"Disk usage: {disk.percent:.1f}%")
+total_gb = disk.total / (1024**3)
+free_gb = disk.free / (1024**3)
+
+print(
+    f"Disk usage:({path}) {disk.percent:.1f}% (free: {free_gb:.1f} GB / total: {total_gb:.1f} GB)"
+)
+
 print(status)
